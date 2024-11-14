@@ -46,7 +46,7 @@ Each application is built using N8N's workflow automation platform:
 ### Installation Steps
 1. Clone this repository
 ```bash
-git clone https://github.com/yourusername/n8n-agents.git
+[git clone https://github.com/yourusername/n8n-agents.git](https://github.com/sureshravuris/build-agents-with-N8N-agentic-platform--no-code-apps.git)
 cd n8n-agents
 ```
 
