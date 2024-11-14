@@ -1,0 +1,336 @@
+{
+  "name": "PartB-Backend",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1LGT7qlocyjNb3e1so3yVcmz8aMvuV18U",
+          "mode": "list",
+          "cachedResultName": "Oak & Barrel",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1LGT7qlocyjNb3e1so3yVcmz8aMvuV18U"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "id": "3959e66d-b68b-4252-a7fa-d83b3bf0afd0",
+      "name": "Google Drive Trigger",
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        460,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "id": "ea21094a-1f62-4c46-8624-6a93204e0bf4",
+      "name": "Google Drive",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        680,
+        460
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "h7fJj5oV74Q66yBs",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-small",
+        "options": {}
+      },
+      "id": "5e53e27e-4bbf-4576-8fa9-3ebcf5d993f9",
+      "name": "Embeddings OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1,
+      "position": [
+        900,
+        680
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "R37hsBJheZZa8efq",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "file",
+                "value": "={{ $json.name }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "82eabbb8-cfad-4c88-bc02-7b85b77f4df1",
+      "name": "Default Data Loader",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        680
+      ]
+    },
+    {
+      "parameters": {
+        "chunkSize": 500,
+        "chunkOverlap": 20,
+        "options": {}
+      },
+      "id": "83a263ca-80ab-4b13-a88d-03bd1431f1c3",
+      "name": "Recursive Character Text Splitter",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        900
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "n8n-tutorial",
+          "mode": "list",
+          "cachedResultName": "n8n-tutorial"
+        },
+        "options": {
+          "pineconeNamespace": "Oak & Barrel"
+        }
+      },
+      "id": "bb5e4d36-da40-4896-82b8-4c1f26808ac4",
+      "name": "Pinecone Vector Store",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1,
+      "position": [
+        900,
+        460
+      ],
+      "credentials": {
+        "pineconeApi": {
+          "id": "6PsDvFbvZainz2rZ",
+          "name": "PineconeApi account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Google Drive Trigger": [
+      {
+        "json": {
+          "kind": "drive#file",
+          "copyRequiresWriterPermission": false,
+          "writersCanShare": true,
+          "viewedByMe": true,
+          "mimeType": "application/vnd.google-apps.document",
+          "exportLinks": {
+            "application/rtf": "https://docs.google.com/feeds/download/documents/export/Export?id=1orY0P46gcZyBg1ckq1ZB2UqH7tjpGhHdyuBK2hp99Fo&exportFormat=rtf",
+            "application/vnd.oasis.opendocument.text": "https://docs.google.com/feeds/download/documents/export/Export?id=1orY0P46gcZyBg1ckq1ZB2UqH7tjpGhHdyuBK2hp99Fo&exportFormat=odt",
+            "text/html": "https://docs.google.com/feeds/download/documents/export/Export?id=1orY0P46gcZyBg1ckq1ZB2UqH7tjpGhHdyuBK2hp99Fo&exportFormat=html",
+            "application/pdf": "https://docs.google.com/feeds/download/documents/export/Export?id=1orY0P46gcZyBg1ckq1ZB2UqH7tjpGhHdyuBK2hp99Fo&exportFormat=pdf",
+            "text/x-markdown": "https://docs.google.com/feeds/download/documents/export/Export?id=1orY0P46gcZyBg1ckq1ZB2UqH7tjpGhHdyuBK2hp99Fo&exportFormat=markdown",
+            "text/markdown": "https://docs.google.com/feeds/download/documents/export/Export?id=1orY0P46gcZyBg1ckq1ZB2UqH7tjpGhHdyuBK2hp99Fo&exportFormat=markdown",
+            "application/epub+zip": "https://docs.google.com/feeds/download/documents/export/Export?id=1orY0P46gcZyBg1ckq1ZB2UqH7tjpGhHdyuBK2hp99Fo&exportFormat=epub",
+            "application/zip": "https://docs.google.com/feeds/download/documents/export/Export?id=1orY0P46gcZyBg1ckq1ZB2UqH7tjpGhHdyuBK2hp99Fo&exportFormat=zip",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "https://docs.google.com/feeds/download/documents/export/Export?id=1orY0P46gcZyBg1ckq1ZB2UqH7tjpGhHdyuBK2hp99Fo&exportFormat=docx",
+            "text/plain": "https://docs.google.com/feeds/download/documents/export/Export?id=1orY0P46gcZyBg1ckq1ZB2UqH7tjpGhHdyuBK2hp99Fo&exportFormat=txt"
+          },
+          "parents": [
+            "1LGT7qlocyjNb3e1so3yVcmz8aMvuV18U"
+          ],
+          "thumbnailLink": "https://lh3.googleusercontent.com/drive-storage/AJQWtBO4aRrFYLS2z86Zw-VgdD_f3astlHSDK13XdawmZhTKFqpEGTlWgiOaBGzi8rMVDj4uely3pyjbgC9dhTa19PM5Y5sTPCBIrnDrB_M_aZWh3jP4YEqsRz3eBapR=s220",
+          "iconLink": "https://drive-thirdparty.googleusercontent.com/16/type/application/vnd.google-apps.document",
+          "shared": false,
+          "lastModifyingUser": {
+            "displayName": "Shawn Chumbar",
+            "kind": "drive#user",
+            "me": true,
+            "permissionId": "10207020122717246716",
+            "emailAddress": "shawnsingh786@gmail.com",
+            "photoLink": "https://lh3.googleusercontent.com/a/ACg8ocJFIfW79hhcfMdgqC6LKp3_8l2djPhUpp8zZYsw_IO6Lkz9MH_c=s64"
+          },
+          "owners": [
+            {
+              "displayName": "Shawn Chumbar",
+              "kind": "drive#user",
+              "me": true,
+              "permissionId": "10207020122717246716",
+              "emailAddress": "shawnsingh786@gmail.com",
+              "photoLink": "https://lh3.googleusercontent.com/a/ACg8ocJFIfW79hhcfMdgqC6LKp3_8l2djPhUpp8zZYsw_IO6Lkz9MH_c=s64"
+            }
+          ],
+          "webViewLink": "https://docs.google.com/document/d/1orY0P46gcZyBg1ckq1ZB2UqH7tjpGhHdyuBK2hp99Fo/edit?usp=drivesdk",
+          "size": "1024",
+          "viewersCanCopyContent": true,
+          "permissions": [
+            {
+              "id": "10207020122717246716",
+              "displayName": "Shawn Chumbar",
+              "type": "user",
+              "kind": "drive#permission",
+              "photoLink": "https://lh3.googleusercontent.com/a/ACg8ocJFIfW79hhcfMdgqC6LKp3_8l2djPhUpp8zZYsw_IO6Lkz9MH_c=s64",
+              "emailAddress": "shawnsingh786@gmail.com",
+              "role": "owner",
+              "deleted": false,
+              "pendingOwner": false
+            }
+          ],
+          "hasThumbnail": true,
+          "spaces": [
+            "drive"
+          ],
+          "id": "1orY0P46gcZyBg1ckq1ZB2UqH7tjpGhHdyuBK2hp99Fo",
+          "name": "oak-and-barrel-qa",
+          "starred": false,
+          "trashed": false,
+          "explicitlyTrashed": false,
+          "createdTime": "2024-11-03T20:51:03.941Z",
+          "modifiedTime": "2024-11-03T20:51:45.103Z",
+          "modifiedByMeTime": "2024-11-03T20:51:45.103Z",
+          "viewedByMeTime": "2024-11-03T20:51:45.103Z",
+          "quotaBytesUsed": "1024",
+          "version": "10",
+          "ownedByMe": true,
+          "isAppAuthorized": false,
+          "capabilities": {
+            "canChangeViewersCanCopyContent": true,
+            "canEdit": true,
+            "canCopy": true,
+            "canComment": true,
+            "canAddChildren": false,
+            "canDelete": true,
+            "canDownload": true,
+            "canListChildren": false,
+            "canRemoveChildren": false,
+            "canRename": true,
+            "canTrash": true,
+            "canReadRevisions": true,
+            "canChangeCopyRequiresWriterPermission": true,
+            "canMoveItemIntoTeamDrive": true,
+            "canUntrash": true,
+            "canModifyContent": true,
+            "canMoveItemOutOfDrive": true,
+            "canAddMyDriveParent": false,
+            "canRemoveMyDriveParent": true,
+            "canMoveItemWithinDrive": true,
+            "canShare": true,
+            "canMoveChildrenWithinDrive": false,
+            "canModifyContentRestriction": true,
+            "canChangeSecurityUpdateEnabled": false,
+            "canAcceptOwnership": false,
+            "canReadLabels": false,
+            "canModifyLabels": false,
+            "canModifyEditorContentRestriction": true,
+            "canModifyOwnerContentRestriction": true,
+            "canRemoveContentRestriction": false
+          },
+          "thumbnailVersion": "5",
+          "modifiedByMe": true,
+          "permissionIds": [
+            "10207020122717246716"
+          ],
+          "linkShareMetadata": {
+            "securityUpdateEligible": false,
+            "securityUpdateEnabled": true
+          }
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "fe20e587-0dda-4998-9122-99893a1e6536",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "94350e129ae7bba5f6b4dd61f4469cea7ff79c47043c8463949bd4d68a3056cd"
+  },
+  "id": "ihjmOAKwLmgMDUtI",
+  "tags": []
+}

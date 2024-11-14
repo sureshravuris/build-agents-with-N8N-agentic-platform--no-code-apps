@@ -1,0 +1,232 @@
+{
+  "name": "PartA-CustomerSupport",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "3da80db0-b056-406c-9e65-58db82c9ea38",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        680,
+        680
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "R37hsBJheZZa8efq",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "3836eab3-d28c-4c65-a3e1-9837b3d649db",
+      "name": "Window Buffer Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.2,
+      "position": [
+        820,
+        720
+      ]
+    },
+    {
+      "parameters": {
+        "name": "oak_and_barrel_information",
+        "description": "Returns documents related to the restaurant and it's menu. "
+      },
+      "id": "5aee407d-029e-49a1-978b-d88b80ddf454",
+      "name": "Vector Store Tool",
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1,
+      "position": [
+        1080,
+        680
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "0cf77192-778c-4780-8f92-92a0ec845779",
+      "name": "OpenAI Chat Model1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        800
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "R37hsBJheZZa8efq",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-small",
+        "options": {}
+      },
+      "id": "99f36b88-9b2a-40ed-8ce7-cd2d1fe2d5e8",
+      "name": "Embeddings OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        1080
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "R37hsBJheZZa8efq",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "n8n-tutorial",
+          "mode": "list",
+          "cachedResultName": "n8n-tutorial"
+        },
+        "options": {
+          "pineconeNamespace": "Oak & Barrel"
+        }
+      },
+      "id": "161cd943-17c2-42ef-b1d7-a9f16b52a529",
+      "name": "Pinecone Vector Store",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        860
+      ],
+      "credentials": {
+        "pineconeApi": {
+          "id": "6PsDvFbvZainz2rZ",
+          "name": "PineconeApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a customer support agent for a restaurant called Oak & Barrel. Your name is Max. Your tone should be friendly and helpful. When asked questions about the restaurant, use the provided context. If you do not know the answer, then simply respond with \"I don't know\"."
+        }
+      },
+      "id": "898ce390-7262-4c53-8d89-376cd259f5ce",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        680,
+        460
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "312fd6fc-b467-4326-87d9-c09b6f6e923f",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.manualChatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        420,
+        460
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vector Store Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Vector Store Tool",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Vector Store Tool",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "bf3cff43-0730-4325-9e5a-62ffa30b2a5d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "94350e129ae7bba5f6b4dd61f4469cea7ff79c47043c8463949bd4d68a3056cd"
+  },
+  "id": "ofGLnZ5kB0HG5i5r",
+  "tags": []
+}

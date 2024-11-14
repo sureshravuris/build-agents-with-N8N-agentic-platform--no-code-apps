@@ -1,0 +1,392 @@
+{
+  "name": "PartC-HumanInTheLoop",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "32bdb799-35f1-4054-903d-e6182f905803",
+      "name": "Window Buffer Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.1,
+      "position": [
+        860,
+        760
+      ]
+    },
+    {
+      "parameters": {
+        "name": "dont_know_tool",
+        "description": "Use this tool if you don't know the answer to the user's question, or if you're not very confident about your answer.",
+        "workflowId": "={{ $workflow.id}}",
+        "fields": {
+          "values": [
+            {
+              "name": "chatInput",
+              "stringValue": "={{ $('Chat Trigger').item.json.chatInput }}"
+            }
+          ]
+        }
+      },
+      "id": "64fa7fdd-16a8-461e-b706-8c9315965211",
+      "name": "Not sure?",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1,
+      "position": [
+        1080,
+        760
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "57d9a546-bd60-4fac-8092-3fa33c1ce95a",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        500,
+        1360
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### Sub-workflow: Custom tool\nThe agent above can call this workflow. It checks if the user has supplied an email address. If they haven't it prompts them to provide one. If they have, it messages a customer support channel for help.",
+        "height": 775.3931210698682,
+        "width": 1118.3459011229047,
+        "color": 7
+      },
+      "id": "697f5495-c1e9-45aa-ba99-e8008638e0c2",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        460,
+        1020
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "### Main workflow: AI agent using custom tool",
+        "height": 486.5625,
+        "width": 927.5,
+        "color": 7
+      },
+      "id": "1377488b-4f8b-464f-bf42-d97cf19d7201",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        460,
+        460
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "**This tool calls the sub-workflow below**",
+        "height": 179.21380662202682,
+        "width": 197.45572294791873,
+        "color": 5
+      },
+      "id": "fdd89530-c0cd-4a59-b5ff-c5bb1b047bf2",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1020,
+        700
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "**Set your credentials**",
+        "height": 213.44323866265472,
+        "width": 150,
+        "color": 2
+      },
+      "id": "1203e0ec-45ed-4456-957b-c780e30d1987",
+      "name": "Sticky Note5",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        660,
+        680
+      ]
+    },
+    {
+      "parameters": {
+        "content": "**Set your credentials and Slack details**",
+        "height": 250.57252651663197,
+        "width": 178.0499248677781,
+        "color": 2
+      },
+      "id": "0d0f300a-2d79-4942-854c-17c86d7a7048",
+      "name": "Sticky Note4",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        980,
+        1180
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Try it out\n\nSelect **Chat** at the bottom and enter:\n\n_Hi! Please respond to this as if you don't know the answer to my query._",
+        "height": 214.8397420554627,
+        "width": 185.9375,
+        "color": 4
+      },
+      "id": "d55e143a-b44e-429c-9835-310245af7edf",
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        300,
+        520
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Next steps\n\nLearn more about [Advanced AI in n8n](https://docs.n8n.io/advanced-ai/)",
+        "height": 144.50520156238127
+      },
+      "id": "3c3f1770-dd14-4e76-a15b-2ebc592bbb56",
+      "name": "Sticky Note6",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1540,
+        1600
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "a1a3de45-b5d7-410b-9be8-5ef55584e114",
+      "name": "Chat Trigger",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1,
+      "position": [
+        560,
+        520
+      ],
+      "webhookId": "785e0c0c-12e5-4249-9abe-47bb131975cb"
+    },
+    {
+      "parameters": {
+        "jsCode": "response = {\"response\":\"I'm sorry I don't know the answer. Please repeat your question and include your email address so I can request help.\"};\nreturn response;"
+      },
+      "id": "52d3d228-cd0a-4691-a855-d78085b75544",
+      "name": "Prompt the user to provide an email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1020,
+        1520
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "response = {\"response\": \"Thank you for getting in touch. I've messaged a human to help.\"}\nreturn response;"
+      },
+      "id": "6002d93a-64e5-45a9-bd8a-e1b9d4257e31",
+      "name": "Confirm that we've messaged a human",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1260,
+        1260
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "5e21e7c5-db60-4111-bb17-c289ae0fc159",
+              "leftValue": "={{ $('Execute Workflow Trigger').item.json.chatInput }}",
+              "rightValue": "/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\\.[a-zA-Z0-9_-]+)/gi",
+              "operator": {
+                "type": "string",
+                "operation": "regex"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "ba85adb7-36e6-4c68-8f94-1ba8e8e67386",
+      "name": "Check if user has provided email",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        720,
+        1360
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "general",
+          "mode": "name"
+        },
+        "text": "={{ \"A user had a question the bot couldn't answer. Here's their message: \" + $('Execute Workflow Trigger').item.json.chatInput }}",
+        "otherOptions": {}
+      },
+      "id": "57ad1045-5de4-415c-bb41-5d02e02236e1",
+      "name": "Message Slack for help",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.1,
+      "position": [
+        1020,
+        1260
+      ],
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "m46vS96zI9XqylhX",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "gpt-4",
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "id": "e856f4e0-9449-4c3e-a24b-2289cacb591c",
+      "name": "GPT4",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        700,
+        740
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "R37hsBJheZZa8efq",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Try to answer the user's question. When you can't answer, or you're not confident of the answer, use the appropriate tool. When you use the dont_know_tool, respond with the message from the tool."
+        }
+      },
+      "id": "414abed3-4206-4c9c-b42f-785508a90000",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.2,
+      "position": [
+        780,
+        520
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Not sure?": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Check if user has provided email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check if user has provided email": {
+      "main": [
+        [
+          {
+            "node": "Message Slack for help",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prompt the user to provide an email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message Slack for help": {
+      "main": [
+        [
+          {
+            "node": "Confirm that we've messaged a human",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GPT4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "047d708f-8506-4116-bee0-c486f73e39c3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "94350e129ae7bba5f6b4dd61f4469cea7ff79c47043c8463949bd4d68a3056cd"
+  },
+  "id": "IGLr8XWo7uCh5532",
+  "tags": []
+}
